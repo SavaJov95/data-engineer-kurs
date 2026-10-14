@@ -10,3 +10,6 @@ Teme koje očekujem da budu obrađene tokom kursa:
 1. SQL
 2. Python
 3. Git
+4. Databricks
+5. Pyspark
+6. ETL
