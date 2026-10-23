@@ -7,7 +7,7 @@ SELECT
     t.team_name,
     s.stadium_name
 FROM teams t
-JOIN stadiums s ON t.stadium_id = s.stadium_id;
+LEFT JOIN stadiums s ON t.stadium_id = s.stadium_id; --dodat left join
 
 
 -- 2.Prikažite ime i prezime igrača i naziv kluba za koji je igrao u
@@ -30,7 +30,7 @@ SELECT
     s.stadium_name,
     m.attendance
 FROM matches m
-JOIN stadiums s ON m.stadium_id = s.stadium_id
+LEFT JOIN stadiums s ON m.stadium_id = s.stadium_id --dodat left join
 WHERE m.season = '2024/25';
 
 
@@ -68,7 +68,7 @@ SELECT
 FROM matches m
 JOIN match_events me ON m.match_id = me.match_id
 JOIN teams t ON t.team_id = me.team_id
-WHERE m.season = '2024/25' AND me.event_type ILIKE '%yellow%'
+WHERE m.season = '2024/25' AND me.event_type IN ('yellow_card', 'second_yellow') -- ubaceno event_type IN ('yellow_card', 'second_yellow') umesto LIKE '%yellow'
 GROUP BY t.team_name
 ORDER BY total_yellow_cards DESC;
 -- Fudbaleri Ashford Roversa su u sezoni 2024/25 dobili najviše žutih kartona - 77
@@ -272,7 +272,7 @@ WHERE m.season = '2024/25' AND me.event_type = 'own_goal';
 -- takvih igrača. Rezultat sortirajte opadajuće prema broju igrača.
 SELECT
     t.team_name,
-    COUNT(*) not_in_a_team_players_count
+    COUNT(DISTINCT p.player_id) not_in_a_team_players_count  -- izmenjeno COUNT(*) u COUNT(DISTINCT p.player_id)
 FROM players p 
 LEFT JOIN player_match_stats pms ON p.player_id = pms.player_id
 JOIN player_contracts pc ON p.player_id = pc.player_id
@@ -305,14 +305,8 @@ SELECT DISTINCT
     r.referee_name,
     r.nationality
 FROM referees r
-JOIN matches m ON r.referee_id = m.referee_id 
-WHERE m.season = '2023/24';
-
-SELECT
-    r.referee_name,
-    r.nationality
-FROM referees r
-LEFT JOIN matches m ON r.referee_id = m.referee_id AND m.season = '2024/25'
-WHERE m.referee_id IS NULL;
+JOIN matches m1 ON r.referee_id = m1.referee_id AND m1.season = '2023/24'
+LEFT JOIN matches m2 ON r.referee_id = m2.referee_id AND m2.season = '2024/25'  -- spojena dva upita u jedan
+WHERE m2.referee_id IS NULL;
 -- Paul Tierney-Ross koji je Englez, nije sudio ni jednu utakmicu ni u jednoj sezoni
 -- Ostali su sudili u obe sezone, tako da nemamo traženog sudiju
