@@ -94,7 +94,7 @@ SELECT
     SUM(CASE WHEN home_goals > away_goals THEN 1 ELSE 0 END) AS home_wins,
     SUM(CASE WHEN home_goals = away_goals THEN 1 ELSE 0 END) AS draws,
     SUM(CASE WHEN home_goals < away_goals THEN 1 ELSE 0 END) AS away_wins,
-    ROUND(SUM(CASE WHEN home_goals = away_goals THEN 1 ELSE 0 END) / COUNT(*), 2) AS draw_pct
+    ROUND(100.0 * SUM(CASE WHEN home_goals = away_goals THEN 1 ELSE 0 END) / COUNT(*), 2) AS draw_pct -- dodato 100.0 kako bi dobio procenat
 FROM matches_flat
 GROUP BY season;
 -- 2023/24 - 172 | 96 | 112 | 0.25; 2024/25 - 157 | 95 | 128 | 0.25
