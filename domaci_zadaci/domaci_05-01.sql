@@ -27,7 +27,9 @@ HAVING goals >= 1;
 -- golova. Pomoću ROW_NUMBER() odredite redosled igrača
 -- unutar svakog kluba, od najvećeg ka najmanjem broju golova.
 SELECT 
+    t.team_id,
     t.team_name,
+    p.player_id,
     p.first_name,
     p.last_name,
     COUNT(me.event_type) goals,
@@ -37,7 +39,9 @@ JOIN match_events me ON m.match_id = me.match_id
 JOIN players p ON me.player_id = p.player_id
 JOIN teams t ON me.team_id = t.team_id
 WHERE season = '2024/25' AND m.status = 'played' AND me.event_type IN ('goal', 'penalty_goal')
-GROUP BY t.team_name,
+GROUP BY t.team_id,
+         t.team_name,
+         p.player_id,
          p.first_name,
          p.last_name
 QUALIFY rn IN (1, 2, 3);

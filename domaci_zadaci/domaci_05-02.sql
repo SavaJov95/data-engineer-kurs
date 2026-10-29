@@ -88,7 +88,7 @@ SELECT
     m.match_id,
     m.kickoff_ts,
     m.attendance,
-    LAG(m.attendance) OVER(PARTITION BY m.season, t.team_name ORDER BY m.match_id, m.kickoff_ts) prev_match_attendance,
+    LAG(m.attendance) OVER(PARTITION BY m.season, t.team_name ORDER BY m.kickoff_ts, m.match_id,) prev_match_attendance,
     m.attendance - prev_match_attendance attendance_difference
 FROM matches m
 JOIN teams t ON m.home_team_id = t.team_id
