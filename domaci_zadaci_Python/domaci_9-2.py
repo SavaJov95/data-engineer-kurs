@@ -18,12 +18,12 @@ class BankAccount:
     def deposit(self, amount: float):
         if amount > 0:
             self.balance += amount
-            return self
+        return self
         
     def withdraw(self, amount: float):
         if amount > 0 and amount <= self.balance:
             self.balance -= amount
-            return self
+        return self
         
     def display_balance(self) -> None:
         print(self.balance)
