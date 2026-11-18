@@ -46,7 +46,7 @@ get_grade({'Ana': 5, 'Marko': 4, 'Jovana': 5}, 'Petar')
 def read_file(path: str) -> str:
     try:
         with open(path) as f:
-            return list(csv.reader(f))
+            return f.read()
     except FileNotFoundError:
         return 'File not found.'
 
